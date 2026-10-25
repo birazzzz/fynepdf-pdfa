@@ -3,8 +3,10 @@
 //   fynepdf_pdfa_smoke <1|2|3> <fixtures> <fonts> <out> <pdfium: 0|1>
 //
 // Every file comes out labelled PDF/A, except the password-protected one (refused, with
-// "password") and, without PDFium, PDF/A-1b files whose pages use transparency (written without
-// the label, with "transparency" among the problems). A file written without the label is
+// "password") and, without PDFium, PDF/A-1b files whose pages use transparency or that have a
+// highlight without an appearance (a highlight is drawn with a multiply blend, which PDF/A-1
+// allows only on a page PDFium draws): those are written without the label, with "transparency"
+// or "no-appearance: Highlight" among the problems. A file written without the label is
 // deleted, as an app would, so <out> holds only files that say they're PDF/A: run veraPDF over
 // it (tests/verapdf.cmake) to check that every one is.
 
@@ -75,7 +77,7 @@ int main(int argc, char **argv) {
     } else if (!result.ok) {
       fail(input, "not converted: " + ToJson(result));
     } else if (!result.conforms) {
-      if (pdfium || options.part != 1 || !Has(result.problems, "transparency"))
+      if (pdfium || options.part != 1 || !(Has(result.problems, "transparency") || Has(result.problems, "no-appearance: Highlight")))
         fail(input, "not PDF/A: " + ToJson(result));
     } else if (Pages(output) != Pages(input)) {
       fail(input, "pages changed or the result doesn't open");
