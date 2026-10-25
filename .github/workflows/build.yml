@@ -1,0 +1,51 @@
+# Builds, tests and packs the release command line on each platform (scripts/release-build.mjs)
+# and keeps each archive as an artifact, dist-<target>. Called by ci.yml and release.yml.
+name: Build
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: linux-x64, runner: ubuntu-24.04 }
+          - { target: linux-arm64, runner: ubuntu-24.04-arm }
+          - { target: win32-x64, runner: windows-2025 }
+          - { target: darwin-arm64, runner: macos-15 }
+          - { target: darwin-x64, runner: macos-15-intel }
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # vcpkg's built dependencies: they are built again only for a new baseline or triplet.
+      - uses: actions/cache@v6
+        with:
+          path: build/vcpkg-cache
+          key: vcpkg-${{ matrix.target }}-${{ hashFiles('vcpkg.json', 'cmake/triplets/**', 'docker/release-linux.Dockerfile') }}
+          restore-keys: vcpkg-${{ matrix.target }}-
+
+      # libjpeg-turbo's x64 SIMD code is assembled with nasm (Windows: vcpkg fetches it; Linux: the image).
+      - if: matrix.target == 'darwin-x64'
+        run: brew install nasm
+
+      # Linux builds run in Docker (manylinux_2_28), the others on the runner.
+      - run: node scripts/release-build.mjs ${{ matrix.target }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ matrix.target }}
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+          if-no-files-found: error

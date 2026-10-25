@@ -1,0 +1,31 @@
+{
+  "name": "fynepdf-pdfa",
+  "version": "0.1.0",
+  "description": "Turn PDFs into valid PDF/A by fixing them in place: a command line and Node API, no Ghostscript",
+  "keywords": ["pdf", "pdfa", "pdf/a", "archive", "veraPDF", "qpdf", "ghostscript", "convert"],
+  "homepage": "https://github.com/birazzzz/fynepdf-pdfa#readme",
+  "bugs": "https://github.com/birazzzz/fynepdf-pdfa/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/birazzzz/fynepdf-pdfa.git",
+    "directory": "npm/fynepdf-pdfa"
+  },
+  "license": "MIT",
+  "author": "FynePDF (https://fynepdf.com)",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "bin": {
+    "fynepdf-pdfa": "bin/fynepdf-pdfa.js"
+  },
+  "files": ["index.js", "index.d.ts", "bin"],
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "fynepdf-pdfa-darwin-arm64": "0.1.0",
+    "fynepdf-pdfa-darwin-x64": "0.1.0",
+    "fynepdf-pdfa-linux-arm64": "0.1.0",
+    "fynepdf-pdfa-linux-x64": "0.1.0",
+    "fynepdf-pdfa-win32-x64": "0.1.0"
+  }
+}

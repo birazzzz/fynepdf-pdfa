@@ -43,9 +43,14 @@ yourself: [docs/benchmarks.md](docs/benchmarks.md).
 ### From the command line
 
 ```sh
-fynepdf-pdfa input.pdf output.pdf             # PDF/A-2b
-fynepdf-pdfa input.pdf output.pdf --part 1    # PDF/A-1b (or --part 3)
+npx fynepdf-pdfa input.pdf output.pdf             # PDF/A-2b
+npx fynepdf-pdfa input.pdf output.pdf --part 1    # PDF/A-1b (or --part 3)
 ```
+
+Through npm it runs on Linux (x64, arm64), Windows (x64) and macOS (Apple silicon, Intel), with
+nothing to build. Or download your platform's archive from
+[Releases](https://github.com/birazzzz/fynepdf-pdfa/releases): the program, its fonts and PDFium,
+ready to run as `./fynepdf-pdfa input.pdf output.pdf`.
 
 It prints what happened as one line of JSON and writes `output.pdf`:
 
@@ -57,6 +62,18 @@ It prints what happened as one line of JSON and writes `output.pdf`:
 label, and `problems` say why (for example `font-not-embedded: KozMinPr6N-Regular`). Exit codes: 0 done, 2 needs a
 password, 3 can't be read, 5 can't be written. The fonts are found beside the program or in the
 install; `--fonts <folder>` points elsewhere.
+
+### From Node
+
+```js
+const { toPdfa } = require("fynepdf-pdfa");   // npm install fynepdf-pdfa
+
+const result = await toPdfa("in.pdf", "out.pdf", { part: 2 });
+// result.conforms, result.problems, result.changes: the JSON above
+```
+
+It rejects when the file can't be read, needs a password or can't be written (`error.code`).
+Types included; more in [npm/fynepdf-pdfa](npm/fynepdf-pdfa/README.md).
 
 ### From C++
 
@@ -112,6 +129,11 @@ PDF/A-1b pages that use transparency, add `-DFYNEPDF_PDFA_PDFIUM_DIR=<folder>` w
 [pdfium-binaries](https://github.com/bblanchon/pdfium-binaries) release unpacked in it (PDFium is
 loaded only when a page needs it). Add `-DFYNEPDF_PDFA_VERAPDF=docker` to check every test result
 with veraPDF too.
+
+The self-contained program the releases ship (its libraries linked in from vcpkg, PDFium and the
+fonts beside it) comes from `node scripts/release-build.mjs <target>`, for `linux-x64`,
+`linux-arm64`, `win32-x64`, `darwin-arm64` or `darwin-x64`; Linux targets build in Docker from any
+machine. [RELEASING.md](RELEASING.md) has the rest.
 
 Built and tested on Linux (Debian 12, GCC 12) and Windows (LLVM-MinGW, Clang 22). macOS and
 Visual Studio builds are set up and covered by CI from the first release.

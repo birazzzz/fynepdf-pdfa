@@ -1,0 +1,62 @@
+# Every push to main and pull request: the release build and its tests on all five platforms,
+# the npm packages installed and run as a user would on Linux, Windows and macOS, and a build
+# against the system's own libraries (apt, Homebrew) as the README describes.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  npm:
+    needs: build
+    name: npm (${{ matrix.runner }})
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, windows-2025, macos-15]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+      - run: node scripts/npm-packages.mjs
+      - run: node npm/test.mjs
+
+  system-libraries:
+    name: system libraries (${{ matrix.runner }})
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install the libraries
+        run: |
+          if [ "$RUNNER_OS" = Linux ]; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends cmake ninja-build g++ pkg-config libqpdf-dev libjpeg-dev libopenjp2-7-dev liblcms2-dev
+          else
+            brew install ninja qpdf jpeg-turbo openjpeg little-cms2
+          fi
+      - run: cmake --preset default
+      - run: cmake --build --preset default
+      - run: ctest --preset default

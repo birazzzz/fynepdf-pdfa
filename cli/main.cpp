@@ -1,6 +1,7 @@
 // fynepdf-pdfa: the library's command line.
 //
 //   fynepdf-pdfa <input.pdf> <output.pdf> [--part 1|2|3] [--fonts <folder>] [--flatten-dpi 300]
+//   fynepdf-pdfa --version
 //
 // Prints the result as one line of JSON. Exit codes: 0 done ("conforms" says whether the file is
 // PDF/A or was written without the label, with "problems" saying why), 2 needs a password, 3 can't
@@ -27,6 +28,10 @@
 #include <windows.h>
 #elif defined(__APPLE__)
 #include <mach-o/dyld.h>
+#endif
+
+#ifndef FYNEPDF_PDFA_VERSION
+#define FYNEPDF_PDFA_VERSION "unknown"
 #endif
 
 namespace {
@@ -73,6 +78,10 @@ std::string DefaultFonts(const char *program) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string(argv[1]) == "--version") {
+    std::cout << "fynepdf-pdfa " FYNEPDF_PDFA_VERSION "\n";
+    return 0;
+  }
   if (argc < 3)
     return Usage();
   fynepdf::pdfa::PdfaOptions options;

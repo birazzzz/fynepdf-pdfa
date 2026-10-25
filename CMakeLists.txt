@@ -141,6 +141,7 @@ endif()
 if(FYNEPDF_PDFA_CLI)
     add_executable(fynepdf-pdfa cli/main.cpp)
     target_link_libraries(fynepdf-pdfa PRIVATE fynepdf::pdfa)
+    target_compile_definitions(fynepdf-pdfa PRIVATE FYNEPDF_PDFA_VERSION="${PROJECT_VERSION}")
     if(FYNEPDF_PDFA_PDFIUM_FILE)
         add_custom_command(TARGET fynepdf-pdfa POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${FYNEPDF_PDFA_PDFIUM_FILE} "$<TARGET_FILE_DIR:fynepdf-pdfa>")

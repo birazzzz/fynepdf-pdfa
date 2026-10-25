@@ -5,5 +5,6 @@
   "description": "PDF/A for PDFs, fixed in place, without Ghostscript",
   "homepage": "https://github.com/birazzzz/fynepdf-pdfa",
   "license": "MIT",
-  "dependencies": ["qpdf", "libjpeg-turbo", "openjpeg", "lcms"]
+  "dependencies": ["qpdf", "libjpeg-turbo", "openjpeg", "lcms"],
+  "builtin-baseline": "9e593bb18ea69cc5095e012465dcd675a822ed0d"
 }

@@ -1,0 +1,102 @@
+# Runs when a GitHub release is published: checks every file says the release's version, builds
+# and tests the command line on all five platforms, tests the npm packages as a user would
+# install them, attaches the archives and SHA256SUMS to the release, and stages the npm packages
+# through trusted publishing (no npm token anywhere; every version gets a provenance badge).
+# A maintainer then approves the staged versions on npmjs.com. See RELEASING.md.
+#
+# Run it by hand (Actions → Release → Run workflow) for a dry run: everything is built, tested
+# and packed, kept as the "release" artifact, and nothing is published.
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write # attach the archives to the release
+  id-token: write # npm trusted publishing
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Every file says the release's version
+        if: github.event_name == 'release'
+        run: node scripts/set-version.mjs --check "${GITHUB_REF_NAME}"
+
+  build:
+    needs: version
+    uses: ./.github/workflows/build.yml
+
+  publish:
+    needs: build
+    # Trusted publishing only works on GitHub's own runners.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          # Trusted publishing needs npm 11.5.1+; staging needs npm 11.15+.
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Update npm
+        run: npm install -g npm@^11.15.0
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+
+      - name: Make the npm packages
+        run: node scripts/npm-packages.mjs
+
+      - name: Test them as a user would
+        run: node npm/test.mjs
+
+      - name: Checksums
+        working-directory: dist
+        run: sha256sum *.tar.gz *.zip | tee SHA256SUMS
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/SHA256SUMS
+            npm/out/*.tgz
+
+      - name: Attach the archives to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${GITHUB_REF_NAME}" dist/*.tar.gz dist/*.zip dist/SHA256SUMS --clobber
+
+      # The platform packages first, then fynepdf-pdfa, which depends on them. A version already
+      # on npm is left as it is: the first release is published by hand (RELEASING.md).
+      - name: Stage on npm
+        if: github.event_name == 'release'
+        run: |
+          for dir in npm/out/fynepdf-pdfa-*/ npm/out/fynepdf-pdfa/; do
+            package=$(node -p "const p = require('./${dir}package.json'); p.name + '@' + p.version")
+            if npm view "${package}" version >/dev/null 2>&1; then
+              echo "${package} is already on npm"
+            else
+              (cd "${dir}" && npm stage publish)
+            fi
+          done
+
+      # `npm publish --dry-run` refuses a version that is already on npm, so the dry run lists
+      # what each package would hold instead.
+      - name: Dry run
+        if: github.event_name == 'workflow_dispatch'
+        run: for dir in npm/out/fynepdf-pdfa-*/ npm/out/fynepdf-pdfa/; do (cd "${dir}" && npm pack --dry-run); done
