@@ -10,10 +10,12 @@ Releases go out from GitHub, not from a laptop. Publishing a GitHub release runs
 3. makes the npm packages and installs them as a user would, running the command line and the
    Node API;
 4. attaches the five archives and `SHA256SUMS` to the release;
-5. stages the six npm packages through **trusted publishing**: no npm token anywhere, and each
-   version gets a provenance badge linking it to the commit.
+5. puts the npm packages out through **trusted publishing**: no npm token anywhere, and each
+   version gets a provenance badge linking it to the commit. The five platform packages are
+   published; `fynepdf-pdfa`, the one people install, is staged.
 
-A maintainer then approves the staged versions on npmjs.com.
+A maintainer then approves `fynepdf-pdfa` on npmjs.com, and that version goes live. The platform
+packages do nothing until it points at them, so they need no approval of their own.
 
 ## What is published
 
@@ -49,8 +51,8 @@ quarantine with `xattr -d com.apple.quarantine fynepdf-pdfa libpdfium.dylib`.
 3. **Wait for the Release workflow** (Actions tab; about 10 minutes, longer when the vcpkg cache is
    cold). It stops before anything is published if a file disagrees with the tag or a test fails.
 
-4. **Approve it on npm.** npmjs.com → your avatar → Staged Packages. Approve the five platform
-   packages first, then `fynepdf-pdfa`, with your two-factor login. Then check:
+4. **Approve it on npm.** npmjs.com → your avatar → Staged Packages → `fynepdf-pdfa` → Approve,
+   with your two-factor login. Then check:
 
    ```bash
    npm view fynepdf-pdfa version
@@ -93,17 +95,20 @@ first version goes up by hand. npm needs two-factor login on your account.
    it worked. `npm trust` needs npm 11, so run it through `npx`, signed in with `npm login`:
 
    ```bash
-   for name in fynepdf-pdfa fynepdf-pdfa-linux-x64 fynepdf-pdfa-linux-arm64 fynepdf-pdfa-win32-x64 fynepdf-pdfa-darwin-arm64 fynepdf-pdfa-darwin-x64; do
-     npx -y npm@11 trust github "$name" --file release.yml --repository birazzzz/fynepdf-pdfa --allow-stage-publish
+   # The platform packages: CI publishes them.
+   for name in fynepdf-pdfa-linux-x64 fynepdf-pdfa-linux-arm64 fynepdf-pdfa-win32-x64 fynepdf-pdfa-darwin-arm64 fynepdf-pdfa-darwin-x64; do
+     npx -y npm@11 trust github "$name" --file release.yml --repository birazzzz/fynepdf-pdfa --allow-publish
    done
+   # fynepdf-pdfa: CI only stages it, and you approve each version.
+   npx -y npm@11 trust github fynepdf-pdfa --file release.yml --repository birazzzz/fynepdf-pdfa --allow-stage-publish
    ```
 
    Each asks for your two-factor login and prints `Trust configuration created successfully`.
-   Check with `npx -y npm@11 trust list fynepdf-pdfa` (and the others): it should show the
-   repository, `release.yml` and `permissions: stage publish`. Leaving out `--allow-publish`
-   means CI can only stage, and a person approves every version.
+   Check with `npx -y npm@11 trust list <name>`: it should show the repository and `release.yml`,
+   with `permissions: publish` for a platform package and `permissions: stage publish` for
+   `fynepdf-pdfa`.
 5. **Publish the v0.1.0 GitHub release.** The workflow attaches the archives and sees that 0.1.0 is
-   already on npm, so it stages nothing. Every release after that goes through staging.
+   already on npm, so it publishes nothing. Every release after that goes through the workflow.
 6. **After the first staged release works**, lock each package to it: npmjs.com → the package →
    Settings → Publishing access → "Require two-factor authentication and disallow bypass 2fa
    tokens". Trusted publishing keeps working; tokens stop.
