@@ -105,8 +105,8 @@ text{font-family:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
   <g style="animation:k24 15s cubic-bezier(0.16,1,0.3,1) infinite"><circle cx="735" cy="488" r="11" fill="#18d54b"/><circle cx="765" cy="488" r="11" fill="#18d54b"/><circle cx="795" cy="488" r="11" fill="#18d54b"/><circle cx="825" cy="488" r="11" fill="#18d54b"/><circle cx="855" cy="488" r="11" fill="#18d54b"/><circle cx="885" cy="488" r="11" fill="#18d54b"/><circle cx="915" cy="488" r="11" fill="#18d54b"/><circle cx="945" cy="488" r="11" fill="#18d54b"/><circle cx="975" cy="488" r="11" fill="#18d54b"/><circle cx="1005" cy="488" r="11" fill="#18d54b"/></g>
   <g style="animation:k25 15s cubic-bezier(0.16,1,0.3,1) infinite"><circle cx="735" cy="518" r="11" fill="#18d54b"/><circle cx="765" cy="518" r="11" fill="#18d54b"/><circle cx="795" cy="518" r="11" fill="#18d54b"/><circle cx="825" cy="518" r="11" fill="#18d54b"/><circle cx="855" cy="518" r="11" fill="#18d54b"/><circle cx="885" cy="518" r="11" fill="#18d54b"/><circle cx="915" cy="518" r="11" fill="#18d54b"/><circle cx="945" cy="518" r="11" fill="#18d54b"/><circle cx="975" cy="518" r="11" fill="#18d54b"/><circle cx="1005" cy="518" r="11" fill="#c9c7c5"/></g>
   <g style="animation:k26 15s cubic-bezier(0.16,1,0.3,1) infinite">
-    <circle cx="160" cy="574" r="8" fill="#d55418"/><text x="176" y="580" class="legend"><tspan class="strong-warn">44 files</tspan> labelled PDF/A that fail</text>
-    <circle cx="700" cy="574" r="8" fill="#18d54b"/><text x="716" y="580" class="legend"><tspan class="strong-ours">0 files</tspan> labelled PDF/A that fail</text>
+    <circle cx="201.5" cy="574" r="8" fill="#d55418"/><text x="217.5" y="580" class="legend"><tspan class="strong-warn">44 files</tspan> labelled PDF/A that fail</text>
+    <circle cx="746.5" cy="574" r="8" fill="#18d54b"/><text x="762.5" y="580" class="legend"><tspan class="strong-ours">0 files</tspan> labelled PDF/A that fail</text>
   </g>
 </g>
 <g style="animation:k27 15s cubic-bezier(0.4,0,0.2,1) infinite">

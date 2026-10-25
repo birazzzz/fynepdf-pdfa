@@ -77,11 +77,17 @@ const waffle = (cx, name, ours, counts, at) => {
     out.push(dot(i, "#d55418", ` class="o" style="${anim(`0%,${pc(at + 2.2)}{opacity:0;transform:scale(0.3)}${pc(at + 2.6)}{opacity:1;transform:scale(1.35)}${pc(at + 2.9)}{transform:scale(1)}${pc(at + 3.3)}{transform:scale(1.25)}${pc(at + 3.6)},100%{opacity:1;transform:none}`, { ease: "cubic-bezier(0.34,1.56,0.64,1)" })}"`));
   return out.join("\n  ");
 };
+// Under each grid: a 16px dot, 8px, the text (its width measured in Chrome, Hanken Grotesk 18px),
+// centred as one.
+const legend = (cx, colour, strong, count, width) => {
+  const left = cx - (24 + width) / 2;
+  return `<circle cx="${left + 8}" cy="574" r="8" fill="${colour}"/><text x="${left + 24}" y="580" class="legend"><tspan class="${strong}">${count}</tspan> labelled PDF/A that fail</text>`;
+};
 parts.push(`  ${waffle(330, "Ghostscript 10.08", false, GS, s1[0] + 0.4)}
   ${waffle(870, "fynepdf-pdfa", true, OURS, s1[0] + 0.4)}
   <g ${rise(s1[0] + 2.8, 6)}>
-    <circle cx="160" cy="574" r="8" fill="#d55418"/><text x="176" y="580" class="legend"><tspan class="strong-warn">44 files</tspan> labelled PDF/A that fail</text>
-    <circle cx="700" cy="574" r="8" fill="#18d54b"/><text x="716" y="580" class="legend"><tspan class="strong-ours">0 files</tspan> labelled PDF/A that fail</text>
+    ${legend(330, "#d55418", "strong-warn", "44 files", 249)}
+    ${legend(870, "#18d54b", "strong-ours", "0 files", 239)}
   </g>
 </g>`);
 
