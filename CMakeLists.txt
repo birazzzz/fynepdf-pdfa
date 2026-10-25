@@ -77,6 +77,12 @@ endforeach()
 if(NOT FYNEPDF_PDFA_QPDF_TARGET)
     find_package(qpdf CONFIG REQUIRED)
     set(FYNEPDF_PDFA_QPDF_TARGET qpdf::libqpdf)
+    # A static qpdf (vcpkg's on Linux and macOS) names zlib and libjpeg bare, -lz -ljpeg: they
+    # are found in its own folder.
+    get_target_property(FYNEPDF_PDFA_QPDF_TYPE qpdf::libqpdf TYPE)
+    if(FYNEPDF_PDFA_QPDF_TYPE STREQUAL "STATIC_LIBRARY")
+        target_link_directories(fynepdf_pdfa PUBLIC $<BUILD_INTERFACE:$<TARGET_LINKER_FILE_DIR:qpdf::libqpdf>>)
+    endif()
 endif()
 if(NOT FYNEPDF_PDFA_JPEG_TARGET)
     find_package(JPEG REQUIRED)

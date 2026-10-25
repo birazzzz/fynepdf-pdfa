@@ -73,6 +73,23 @@ const works = (command, args) => {
 // Windows' own tar: Git's GNU tar reads "C:" in a path as a remote host.
 const tar = process.platform === "win32" ? path.join(process.env.SystemRoot, "System32", "tar.exe") : "tar";
 
+// The program may load only the system's own libraries: anything else (a Homebrew libjpeg on the
+// runner, say) wouldn't be on a user's machine. Windows needs no check: its triplet is all static.
+function checkLinks(file) {
+  let libraries = [];
+  if (os === "linux") {
+    const dynamic = execFileSync("readelf", ["-d", file]).toString();
+    libraries = [...dynamic.matchAll(/\(NEEDED\)[^[]*\[([^\]]+)\]/g)].map((match) => match[1]);
+    libraries = libraries.filter((name) => !/^(libc|libm|libpthread|libdl|librt)\.so\.\d+$|^ld-linux/.test(name));
+  } else if (os === "darwin") {
+    const lines = execFileSync("otool", ["-L", file]).toString().split("\n").slice(1);
+    libraries = lines.map((line) => line.trim().split(" ")[0]).filter(Boolean);
+    libraries = libraries.filter((name) => !name.startsWith("/usr/lib/") && !name.startsWith("/System/Library/"));
+  }
+  if (libraries.length) throw new Error(`${path.basename(file)} links libraries a user may not have: ${libraries.join(", ")}`);
+  console.log(`${path.basename(file)}: only system libraries`);
+}
+
 // Linux: build inside manylinux_2_28, so the result runs on glibc 2.28 and newer.
 if (os === "linux" && !process.env.FYNEPDF_IN_CONTAINER) {
   const [platform, base] = target.docker;
@@ -146,7 +163,8 @@ run("ctest", ["--test-dir", build, "-C", "Release", "--output-on-failure"], { en
 // Pack: the program, PDFium beside it, the fonts, and the licences of everything inside.
 const exe = os === "win32" ? "fynepdf-pdfa.exe" : "fynepdf-pdfa";
 const built = [path.join(build, "Release", exe), path.join(build, exe)].find((file) => fs.existsSync(file));
-const library = ["lib/libpdfium.so", "lib/libpdfium.dylib", "bin/pdfium.dll"]
+checkLinks(built);
+const library =["lib/libpdfium.so", "lib/libpdfium.dylib", "bin/pdfium.dll"]
   .map((file) => path.join(pdfium, file))
   .find((file) => fs.existsSync(file));
 const folder = `fynepdf-pdfa-${version}-${target.label}`;

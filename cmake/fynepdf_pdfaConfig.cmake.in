@@ -18,4 +18,10 @@ endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/fynepdf_pdfaTargets.cmake")
 
+# A static qpdf names zlib and libjpeg bare (-lz -ljpeg): they are found in its own folder.
+get_target_property(_fynepdf_pdfa_qpdf_type qpdf::libqpdf TYPE)
+if(_fynepdf_pdfa_qpdf_type STREQUAL "STATIC_LIBRARY")
+    set_property(TARGET fynepdf::pdfa APPEND PROPERTY INTERFACE_LINK_DIRECTORIES "$<TARGET_LINKER_FILE_DIR:qpdf::libqpdf>")
+endif()
+
 check_required_components(fynepdf_pdfa)

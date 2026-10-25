@@ -28,8 +28,10 @@ jobs:
         with:
           node-version: 24
 
-      # vcpkg's built dependencies: they are built again only for a new baseline or triplet.
-      - uses: actions/cache@v6
+      # vcpkg's built dependencies: they are built again only for a new baseline or triplet. Saved
+      # even when a later step fails, so a fix doesn't build them all again.
+      - id: vcpkg-cache
+        uses: actions/cache/restore@v6
         with:
           path: build/vcpkg-cache
           key: vcpkg-${{ matrix.target }}-${{ hashFiles('vcpkg.json', 'cmake/triplets/**', 'docker/release-linux.Dockerfile') }}
@@ -41,6 +43,12 @@ jobs:
 
       # Linux builds run in Docker (manylinux_2_28), the others on the runner.
       - run: node scripts/release-build.mjs ${{ matrix.target }}
+
+      - if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: build/vcpkg-cache
+          key: ${{ steps.vcpkg-cache.outputs.cache-primary-key }}
 
       - uses: actions/upload-artifact@v7
         with:
