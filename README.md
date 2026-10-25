@@ -158,7 +158,7 @@ AGPL licence ruled it out of our desktop app. We wanted PDF/A we could ship ever
 so we wrote our own and measured it against everything else on the same files. This is it.
 
 Sister project: [fynepdf-grayscale](https://github.com/birazzzz/fynepdf-grayscale), which makes
-PDFs grey the same way, in place.
+PDFs gray the same way, in place.
 
 ## Licence
 

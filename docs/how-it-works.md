@@ -93,7 +93,7 @@ the PDF's, an encoding that maps to Unicode, CMaps embedded or predefined.
 ## Colour
 
 PDF/A wants every colour tied to the output intent. fynepdf-pdfa declares sRGB, so device RGB
-and grey stand as they are, and device CMYK becomes RGB: colour operators by formula, while
+and gray stand as they are, and device CMYK becomes RGB: colour operators by formula, while
 CMYK pictures and gradients keep their data byte for byte under a colour space of the four
 process inks with an RGB alternate, so nothing is re-compressed and separations still work. ICC-based colours keep their profiles when PDF/A accepts them (version 4 sRGB
 profiles are swapped for the version 2 one PDF/A-1 can read); with Little CMS, colours that must
