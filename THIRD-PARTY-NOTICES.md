@@ -40,3 +40,8 @@ their notices.
 | [OpenJPEG](https://github.com/uclouvain/openjpeg) (optional) | JPEG 2000 pictures | BSD-2-Clause |
 | [Little CMS](https://github.com/mm2/Little-CMS) (optional) | ICC colour profiles | MIT |
 | [PDFium](https://pdfium.googlesource.com/pdfium/) (optional) | drawing PDF/A-1 pages that use transparency | BSD-3-Clause and Apache-2.0 |
+
+## The documentation
+
+`docs/assets` holds Hanken Grotesk (SIL Open Font License 1.1, `docs/assets/HankenGrotesk-OFL.txt`),
+embedded in the README's animation, and the FynePDF mark.
