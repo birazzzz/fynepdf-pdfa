@@ -1,7 +1,7 @@
 // Whether a new build changes any output: converts a run's inputs again with another build of
 // ours and compares each output byte for byte with the run's, listing the ones that differ.
 //
-//   node scripts/same.mjs --binary /opt/check/fynepdf-pdfa [--run baseline] [--task pdfa-2b] [--sets a,b,c,d,e] [--keep <dir>]
+//   node scripts/same.mjs --binary /opt/fynepdf-pdfa/fynepdf-pdfa [--run baseline] [--task pdfa-2b] [--sets a,b,c,d,e] [--keep <dir>] [--records <tool>]
 //
 // --keep: the outputs that differ are kept there, as <id>.pdf, to look at.
 
@@ -23,7 +23,9 @@ const sets = option("sets", "a,b,c,d,e").split(",");
 const keep = option("keep", null);
 if (keep) fs.mkdirSync(keep, { recursive: true });
 const root = path.join(RESULTS, runName);
-const tool = task === "grayscale" ? "fynepdf-grayscale" : "fynepdf-pdfa";
+// The run's records to compare with (--records for runs made before the two projects split,
+// when Grayscale's were filed under fynepdf-pdfa).
+const tool = option("records", task === "grayscale" ? "fynepdf-grayscale" : "fynepdf-pdfa");
 const part = task.match(/^pdfa-(\d)/)?.[1];
 
 const jobs = [];
