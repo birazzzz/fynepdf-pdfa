@@ -1,0 +1,33 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "System libraries",
+      "description": "qpdf, libjpeg-turbo, OpenJPEG and Little CMS from the system (apt, brew)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "FYNEPDF_PDFA_TESTS": "ON"
+      }
+    },
+    {
+      "name": "vcpkg",
+      "displayName": "vcpkg",
+      "description": "Dependencies from vcpkg.json (set VCPKG_ROOT)",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "default", "configurePreset": "default" },
+    { "name": "vcpkg", "configurePreset": "vcpkg" }
+  ],
+  "testPresets": [
+    { "name": "default", "configurePreset": "default", "output": { "outputOnFailure": true } },
+    { "name": "vcpkg", "configurePreset": "vcpkg", "output": { "outputOnFailure": true } }
+  ]
+}

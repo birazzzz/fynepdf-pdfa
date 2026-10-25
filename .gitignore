@@ -1,0 +1,6 @@
+build/
+*.log
+bench/downloads/
+bench/reports/*/internal/
+bench/set-e/out/
+bench/node_modules/

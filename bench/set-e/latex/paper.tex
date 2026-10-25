@@ -1,0 +1,57 @@
+% A short paper for the PDF/A bench: built with pdfLaTeX (Type 1 fonts, links, bookmarks, a
+% photo) and with latex + dvips + ps2pdf using bitmap fonts (Type 3), the classic arXiv route.
+\documentclass[11pt,a4paper]{article}
+\usepackage{ifpdf}
+\ifpdf
+  \usepackage{graphicx}
+  \usepackage[pdftitle={A short paper},pdfauthor={FynePDF bench}]{hyperref}
+\fi
+\title{Keeping documents readable for decades}
+\author{FynePDF PDF/A bench}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Archives keep documents for decades. This paper is a test file: it has sections that become
+bookmarks, mathematics, a table and, in its pdf\LaTeX{} build, a photo and links.
+\end{abstract}
+
+\section{Introduction}
+PDF/A fixes a document's appearance: every font travels with the file, colours are defined,
+and nothing depends on outside resources. For a document with $n$ pages and $f$ fonts, the
+work of embedding is $O(n + f)$, but the gain lasts:
+\begin{equation}
+  \int_0^\infty e^{-\lambda t}\,\mathrm{d}t = \frac{1}{\lambda}, \qquad
+  \sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}.
+\end{equation}
+
+\section{Method}
+\subsection{Files}
+We compare converters on the same files and measure validity, appearance and size.
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\hline
+Set & Files & Published \\
+\hline
+Feature & 56 & yes \\
+Rules & 1771 & yes \\
+Real world & 1000 & numbers only \\
+\hline
+\end{tabular}
+\caption{The file sets.}
+\end{table}
+
+\ifpdf
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{photo.jpg}
+\caption{A photo, embedded as JPEG.}
+\end{figure}
+See \url{https://www.pdfa.org/} for the standard.
+\fi
+
+\section{Conclusion}
+A converter must never claim conformance a file does not have. Greek letters
+$\alpha, \beta, \gamma$ and symbols $\leq, \geq, \infty$ must survive conversion.
+\end{document}

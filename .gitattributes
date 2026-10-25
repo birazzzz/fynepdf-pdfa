@@ -1,0 +1,7 @@
+# Source in LF everywhere; test PDFs, fonts and CMaps byte for byte (a line-ending change breaks
+# PDF offsets and the checksums in fonts/SHA256SUMS).
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
+fonts/** -text

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "fynepdf-pdfa",
+  "version": "0.1.0",
+  "description": "PDF/A for PDFs, fixed in place, without Ghostscript",
+  "homepage": "https://github.com/birazzzz/fynepdf-pdfa",
+  "license": "MIT",
+  "dependencies": ["qpdf", "libjpeg-turbo", "openjpeg", "lcms"]
+}
