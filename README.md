@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/pdfa.svg" width="100%" alt="fynepdf-pdfa fixes a PDF's problems in place and labels it PDF/A-2b, which veraPDF passes. On 1,000 real web PDFs it makes 993 valid PDF/A-2b files, against 928 for Ghostscript and 923 for LibreOffice; none it labels PDF/A fails veraPDF; converting 2,053 files takes 96 seconds, against 740 for Ghostscript.">
+  <img src="docs/pdfa.svg" width="100%" alt="The same 1,000 real web PDFs made PDF/A: Ghostscript 10.08 labels 44 files PDF/A that fail veraPDF, fynepdf-pdfa none, and makes 993 valid against Ghostscript's 928. Converting 2,053 files takes fynepdf-pdfa 96 seconds and Ghostscript 740.">
 </p>
 
 # fynepdf-pdfa
