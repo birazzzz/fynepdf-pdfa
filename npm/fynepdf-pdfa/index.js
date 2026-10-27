@@ -6,7 +6,14 @@ const { execFile } = require("node:child_process");
 const fs = require("node:fs");
 const path = require("node:path");
 
-const PLATFORMS = ["linux-x64", "linux-arm64", "win32-x64", "darwin-arm64", "darwin-x64"];
+// Each platform's package. Windows' is -windows-x64: npm's spam filter refuses -win32-x64.
+const PACKAGES = {
+  "linux-x64": "fynepdf-pdfa-linux-x64",
+  "linux-arm64": "fynepdf-pdfa-linux-arm64",
+  "win32-x64": "fynepdf-pdfa-windows-x64",
+  "darwin-arm64": "fynepdf-pdfa-darwin-arm64",
+  "darwin-x64": "fynepdf-pdfa-darwin-x64",
+};
 const ERRORS = {
   2: "needs a password",
   3: "can't be read as a PDF",
@@ -17,15 +24,16 @@ const ERRORS = {
 function binaryPath() {
   if (process.env.FYNEPDF_PDFA_BINARY) return process.env.FYNEPDF_PDFA_BINARY;
   const platform = `${process.platform}-${process.arch}`;
+  const name = PACKAGES[platform];
   let folder;
   try {
-    folder = path.dirname(require.resolve(`fynepdf-pdfa-${platform}/package.json`));
+    folder = path.dirname(require.resolve(`${name}/package.json`));
   } catch {
     throw new Error(
-      PLATFORMS.includes(platform)
-        ? `fynepdf-pdfa: its command line for ${platform} (fynepdf-pdfa-${platform}) isn't installed. ` +
+      name
+        ? `fynepdf-pdfa: its command line for ${platform} (${name}) isn't installed. ` +
             "Install again without --no-optional or --omit=optional."
-        : `fynepdf-pdfa has no command line for ${platform} yet (it has ${PLATFORMS.join(", ")}). ` +
+        : `fynepdf-pdfa has no command line for ${platform} yet (it has ${Object.keys(PACKAGES).join(", ")}). ` +
             "Build it from https://github.com/birazzzz/fynepdf-pdfa and set FYNEPDF_PDFA_BINARY to it.",
     );
   }

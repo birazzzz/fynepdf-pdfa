@@ -18,15 +18,16 @@ const version = main.version;
 const cmake = /project\(fynepdf_pdfa\s+VERSION\s+([0-9.]+)/.exec(fs.readFileSync(path.join(root, "CMakeLists.txt"), "utf8"))[1];
 if (cmake !== version) throw new Error(`npm/fynepdf-pdfa is ${version} but CMakeLists.txt is ${cmake}: run scripts/set-version.mjs`);
 
-// npm's names for each platform, and the archive release-build.mjs makes for it.
+// Each platform's package (Windows' is -windows-x64: npm's spam filter refuses -win32-x64; keep it
+// in step with npm/fynepdf-pdfa/index.js), and the archive release-build.mjs makes for it.
 const PLATFORMS = {
-  "linux-x64": { label: "linux-x64", os: "linux", cpu: "x64", libc: "glibc", title: "Linux x64 (glibc 2.28+)" },
-  "linux-arm64": { label: "linux-arm64", os: "linux", cpu: "arm64", libc: "glibc", title: "Linux arm64 (glibc 2.28+)" },
-  "win32-x64": { label: "windows-x64", os: "win32", cpu: "x64", title: "Windows x64" },
-  "darwin-arm64": { label: "macos-arm64", os: "darwin", cpu: "arm64", title: "macOS on Apple silicon (11+)" },
-  "darwin-x64": { label: "macos-x64", os: "darwin", cpu: "x64", title: "macOS on Intel (11+)" },
+  "linux-x64": { name: "fynepdf-pdfa-linux-x64", label: "linux-x64", os: "linux", cpu: "x64", libc: "glibc", title: "Linux x64 (glibc 2.28+)" },
+  "linux-arm64": { name: "fynepdf-pdfa-linux-arm64", label: "linux-arm64", os: "linux", cpu: "arm64", libc: "glibc", title: "Linux arm64 (glibc 2.28+)" },
+  "win32-x64": { name: "fynepdf-pdfa-windows-x64", label: "windows-x64", os: "win32", cpu: "x64", title: "Windows x64" },
+  "darwin-arm64": { name: "fynepdf-pdfa-darwin-arm64", label: "macos-arm64", os: "darwin", cpu: "arm64", title: "macOS on Apple silicon (11+)" },
+  "darwin-x64": { name: "fynepdf-pdfa-darwin-x64", label: "macos-x64", os: "darwin", cpu: "x64", title: "macOS on Intel (11+)" },
 };
-if (Object.keys(main.optionalDependencies).join() !== Object.keys(PLATFORMS).sort().map((p) => `fynepdf-pdfa-${p}`).join())
+if (Object.keys(main.optionalDependencies).sort().join() !== Object.values(PLATFORMS).map((p) => p.name).sort().join())
   throw new Error("npm/fynepdf-pdfa/package.json's optionalDependencies don't list the platforms here");
 
 const partial = process.argv.includes("--partial");
@@ -44,7 +45,7 @@ for (const [platform, p] of Object.entries(PLATFORMS)) {
     if (partial) continue;
     throw new Error(`missing ${path.relative(root, archive)}`);
   }
-  const name = `fynepdf-pdfa-${platform}`;
+  const name = p.name;
   const target = path.join(out, name);
   fs.mkdirSync(target);
   // GNU tar doesn't read zip files; unzip does.

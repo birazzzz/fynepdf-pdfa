@@ -33,8 +33,11 @@ const run = (command, args, cwd) => {
 const project = fs.mkdtempSync(path.join(os.tmpdir(), "fynepdf-pdfa-npm-"));
 console.log(`installing into ${project}`);
 fs.writeFileSync(path.join(project, "package.json"), '{ "private": true }\n');
+// This platform's package (Windows' is -windows-x64, as in npm/fynepdf-pdfa/index.js).
+const platform = `${process.platform}-${process.arch}`;
+const platformPackage = platform === "win32-x64" ? "fynepdf-pdfa-windows-x64" : `fynepdf-pdfa-${platform}`;
 const install = run("npm", ["install", "--no-audit", "--no-fund", "--loglevel=error",
-  packed("fynepdf-pdfa"), packed(`fynepdf-pdfa-${process.platform}-${process.arch}`)], project);
+  packed("fynepdf-pdfa"), packed(platformPackage)], project);
 assert.equal(install.status, 0, install.stderr);
 
 // The command line.

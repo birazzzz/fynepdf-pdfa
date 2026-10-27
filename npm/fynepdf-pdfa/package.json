@@ -26,6 +26,6 @@
     "fynepdf-pdfa-darwin-x64": "0.1.0",
     "fynepdf-pdfa-linux-arm64": "0.1.0",
     "fynepdf-pdfa-linux-x64": "0.1.0",
-    "fynepdf-pdfa-win32-x64": "0.1.0"
+    "fynepdf-pdfa-windows-x64": "0.1.0"
   }
 }

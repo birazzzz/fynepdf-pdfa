@@ -22,7 +22,7 @@ packages do nothing until it points at them, so they need no approval of their o
 | Where | What |
 | --- | --- |
 | GitHub release | `fynepdf-pdfa-<version>-linux-x64.tar.gz`, `-linux-arm64.tar.gz`, `-windows-x64.zip`, `-macos-arm64.tar.gz`, `-macos-x64.tar.gz`, and `SHA256SUMS`. Each holds the program, PDFium, the fonts and every licence. |
-| npm | `fynepdf-pdfa` (the Node API and `npx fynepdf-pdfa`), and one package per platform that it installs as an optional dependency: `fynepdf-pdfa-linux-x64`, `-linux-arm64`, `-win32-x64`, `-darwin-arm64`, `-darwin-x64`. |
+| npm | `fynepdf-pdfa` (the Node API and `npx fynepdf-pdfa`), and one package per platform that it installs as an optional dependency: `fynepdf-pdfa-linux-x64`, `-linux-arm64`, `-windows-x64`, `-darwin-arm64`, `-darwin-x64` (Windows' isn't `-win32-x64`: npm's spam filter refuses that name). |
 | The tag | `FetchContent` and vcpkg users build from it (`GIT_TAG v<version>`). |
 
 The Linux programs are built in manylinux_2_28, so they run on glibc 2.28 and newer (Debian 10,
@@ -96,7 +96,7 @@ first version goes up by hand. npm needs two-factor login on your account.
 
    ```bash
    # The platform packages: CI publishes them.
-   for name in fynepdf-pdfa-linux-x64 fynepdf-pdfa-linux-arm64 fynepdf-pdfa-win32-x64 fynepdf-pdfa-darwin-arm64 fynepdf-pdfa-darwin-x64; do
+   for name in fynepdf-pdfa-linux-x64 fynepdf-pdfa-linux-arm64 fynepdf-pdfa-windows-x64 fynepdf-pdfa-darwin-arm64 fynepdf-pdfa-darwin-x64; do
      npx -y npm@11 trust github "$name" --file release.yml --repository birazzzz/fynepdf-pdfa --allow-publish
    done
    # fynepdf-pdfa: CI only stages it, and you approve each version.
