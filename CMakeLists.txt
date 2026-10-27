@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(fynepdf_pdfa
-    VERSION 0.1.0
+    VERSION 0.1.1
     DESCRIPTION "PDF/A for PDFs, fixed in place, without Ghostscript"
     HOMEPAGE_URL "https://github.com/birazzzz/fynepdf-pdfa"
     LANGUAGES CXX)

@@ -98,7 +98,7 @@ if (result.ok && result.conforms) {
 
 ```cmake
 include(FetchContent)
-FetchContent_Declare(fynepdf_pdfa GIT_REPOSITORY https://github.com/birazzzz/fynepdf-pdfa.git GIT_TAG v0.1.0)
+FetchContent_Declare(fynepdf_pdfa GIT_REPOSITORY https://github.com/birazzzz/fynepdf-pdfa.git GIT_TAG v0.1.1)
 FetchContent_MakeAvailable(fynepdf_pdfa)
 
 target_link_libraries(your_app PRIVATE fynepdf::pdfa)
