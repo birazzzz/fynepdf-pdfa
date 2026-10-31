@@ -1,7 +1,7 @@
 # fynepdf-pdfa
 
 **Turn PDFs into valid PDF/A by fixing them in place, not rebuilding them.** The
-[fynepdf-pdfa](https://github.com/birazzzz/fynepdf-pdfa) command line and a Node API, with no
+[fynepdf-pdfa](https://github.com/fynepdf/fynepdf-pdfa) command line and a Node API, with no
 Ghostscript. Made by [FynePDF](https://fynepdf.com) for its web and desktop apps.
 
 - **Valid:** 99.3% of 2,053 test files come out valid PDF/A-2b, checked by veraPDF (Ghostscript:
@@ -58,7 +58,7 @@ On a platform without a package, build the command line from the repository and 
 ## More
 
 How it works, the full benchmark against Ghostscript, LibreOffice and OCRmyPDF, and the C++
-library: [github.com/birazzzz/fynepdf-pdfa](https://github.com/birazzzz/fynepdf-pdfa).
+library: [github.com/fynepdf/fynepdf-pdfa](https://github.com/fynepdf/fynepdf-pdfa).
 
 MIT, © 2026 FynePDF. The libraries inside each platform package keep their own licences
 (`licenses/`), as do the fonts (`fonts/`).

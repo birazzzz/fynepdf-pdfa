@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 project(fynepdf_pdfa
-    VERSION 0.1.1
+    VERSION 0.1.2
     DESCRIPTION "PDF/A for PDFs, fixed in place, without Ghostscript"
-    HOMEPAGE_URL "https://github.com/birazzzz/fynepdf-pdfa"
+    HOMEPAGE_URL "https://github.com/fynepdf/fynepdf-pdfa"
     LANGUAGES CXX)
 
 # Use it from another CMake project in any of three ways, each giving the target fynepdf::pdfa:
 #   find_package(fynepdf_pdfa CONFIG REQUIRED)   after installing it (or through vcpkg.json)
-#   FetchContent_Declare(fynepdf_pdfa GIT_REPOSITORY https://github.com/birazzzz/fynepdf-pdfa ...)
+#   FetchContent_Declare(fynepdf_pdfa GIT_REPOSITORY https://github.com/fynepdf/fynepdf-pdfa ...)
 #   add_subdirectory(fynepdf-pdfa)
 #
 # It needs qpdf and a libjpeg API (libjpeg-turbo or MozJPEG); OpenJPEG (JPEG 2000 pictures),

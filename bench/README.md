@@ -33,7 +33,7 @@ Everything runs in one Docker image with fixed versions, so anyone can re-run it
 | `libreoffice` | LibreOffice 25.2 opening the PDF in Draw and exporting PDF/A (as Gotenberg does) |
 | `picture-copy` | Grayscale only: pages drawn at 180 dpi and saved as grey JPEGs, as many apps make Grayscale |
 | `fynepdf-pdfa` | Ours, PDF/A: this repository's command line, built by `../scripts/build-linux.sh` and mounted by `bench.sh` |
-| `fynepdf-grayscale` | Ours, Grayscale: the sister project [fynepdf-grayscale](https://github.com/birazzzz/fynepdf-grayscale), when it's checked out next to this repository and built (its `scripts/build-linux.sh`) |
+| `fynepdf-grayscale` | Ours, Grayscale: the sister project [fynepdf-grayscale](https://github.com/fynepdf/fynepdf-grayscale), when it's checked out next to this repository and built (its `scripts/build-linux.sh`) |
 
 Commands are in `scripts/tools.mjs`.
 

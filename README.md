@@ -49,7 +49,7 @@ npx fynepdf-pdfa input.pdf output.pdf --part 1    # PDF/A-1b (or --part 3)
 
 Through npm it runs on Linux (x64, arm64), Windows (x64) and macOS (Apple silicon, Intel), with
 nothing to build. Or download your platform's archive from
-[Releases](https://github.com/birazzzz/fynepdf-pdfa/releases): the program, its fonts and PDFium,
+[Releases](https://github.com/fynepdf/fynepdf-pdfa/releases): the program, its fonts and PDFium,
 ready to run as `./fynepdf-pdfa input.pdf output.pdf`.
 
 It prints what happened as one line of JSON and writes `output.pdf`:
@@ -98,7 +98,7 @@ if (result.ok && result.conforms) {
 
 ```cmake
 include(FetchContent)
-FetchContent_Declare(fynepdf_pdfa GIT_REPOSITORY https://github.com/birazzzz/fynepdf-pdfa.git GIT_TAG v0.1.1)
+FetchContent_Declare(fynepdf_pdfa GIT_REPOSITORY https://github.com/fynepdf/fynepdf-pdfa.git GIT_TAG v0.1.2)
 FetchContent_MakeAvailable(fynepdf_pdfa)
 
 target_link_libraries(your_app PRIVATE fynepdf::pdfa)
@@ -157,7 +157,7 @@ PDF/A that weren't, lost bookmarks and text along the way, used a lot of the ser
 AGPL licence ruled it out of our desktop app. We wanted PDF/A we could ship everywhere and trust,
 so we wrote our own and measured it against everything else on the same files. This is it.
 
-Sister project: [fynepdf-grayscale](https://github.com/birazzzz/fynepdf-grayscale), which makes
+Sister project: [fynepdf-grayscale](https://github.com/fynepdf/fynepdf-grayscale), which makes
 PDFs gray the same way, in place.
 
 ## Licence

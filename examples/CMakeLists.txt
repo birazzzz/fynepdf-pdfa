@@ -5,8 +5,8 @@ project(fynepdf_pdfa_example LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(fynepdf_pdfa
-    GIT_REPOSITORY https://github.com/birazzzz/fynepdf-pdfa.git
-    GIT_TAG v0.1.1)
+    GIT_REPOSITORY https://github.com/fynepdf/fynepdf-pdfa.git
+    GIT_TAG v0.1.2)
 # Or, from an installed copy (or vcpkg): find_package(fynepdf_pdfa CONFIG REQUIRED)
 FetchContent_MakeAvailable(fynepdf_pdfa)
 

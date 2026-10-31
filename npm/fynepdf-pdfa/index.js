@@ -34,7 +34,7 @@ function binaryPath() {
         ? `fynepdf-pdfa: its command line for ${platform} (${name}) isn't installed. ` +
             "Install again without --no-optional or --omit=optional."
         : `fynepdf-pdfa has no command line for ${platform} yet (it has ${Object.keys(PACKAGES).join(", ")}). ` +
-            "Build it from https://github.com/birazzzz/fynepdf-pdfa and set FYNEPDF_PDFA_BINARY to it.",
+            "Build it from https://github.com/fynepdf/fynepdf-pdfa and set FYNEPDF_PDFA_BINARY to it.",
     );
   }
   const binary = path.join(folder, process.platform === "win32" ? "fynepdf-pdfa.exe" : "fynepdf-pdfa");

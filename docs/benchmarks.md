@@ -160,6 +160,6 @@ BENCH_WORKERS=4 ./bench.sh node scripts/run.mjs --run mine --sets a,b,c,e
 ./bench.sh node scripts/docs-tables.mjs --run mine        # the tables on this page
 ```
 
-For Grayscale too, check out [fynepdf-grayscale](https://github.com/birazzzz/fynepdf-grayscale)
+For Grayscale too, check out [fynepdf-grayscale](https://github.com/fynepdf/fynepdf-grayscale)
 next to this repository and build it with its own `scripts/build-linux.sh`. A full run takes a
 few hours, nearly all of it in the other tools and in veraPDF. `bench/README.md` has the details.

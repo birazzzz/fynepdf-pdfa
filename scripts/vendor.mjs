@@ -36,6 +36,6 @@ for (const file of files.sort()) {
 const version = fs.readFileSync(path.join(root, "CMakeLists.txt"), "utf8").match(/project\(fynepdf_pdfa VERSION ([\d.]+)/)?.[1];
 fs.writeFileSync(
   path.join(target, "VENDORED.json"),
-  `${JSON.stringify({ library: "fynepdf-pdfa", version, source: "https://github.com/birazzzz/fynepdf-pdfa", copied: new Date().toISOString(), files: hashes }, null, 2)}\n`,
+  `${JSON.stringify({ library: "fynepdf-pdfa", version, source: "https://github.com/fynepdf/fynepdf-pdfa", copied: new Date().toISOString(), files: hashes }, null, 2)}\n`,
 );
 console.log(`copied ${files.length} files to ${target}`);

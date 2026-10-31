@@ -189,7 +189,7 @@ fs.writeFileSync(path.join(stage, "README.txt"), `fynepdf-pdfa ${version} for ${
   ${os === "win32" ? "fynepdf-pdfa.exe" : "./fynepdf-pdfa"} input.pdf output.pdf --part 1    PDF/A-1b (or --part 3)
 
 Keep the files together: the program finds its fonts and ${path.basename(library)} beside it.
-Documentation: https://github.com/birazzzz/fynepdf-pdfa
+Documentation: https://github.com/fynepdf/fynepdf-pdfa
 
 Made by FynePDF (https://fynepdf.com), MIT licence (LICENSE). The libraries linked into the
 program and PDFium keep their own licences, in licenses/; the fonts' are in fonts/.
