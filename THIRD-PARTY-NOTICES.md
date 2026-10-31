@@ -44,4 +44,4 @@ their notices.
 ## The documentation
 
 `docs/assets` holds Hanken Grotesk (SIL Open Font License 1.1, `docs/assets/HankenGrotesk-OFL.txt`),
-embedded in the README's animation, and the FynePDF mark.
+embedded in the README's animation, and the FynePDF logo.

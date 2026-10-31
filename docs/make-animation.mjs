@@ -4,7 +4,7 @@
 //   2. A race: converting 2,053 files. fynepdf-pdfa is done while Ghostscript has done 13%.
 //   3. What that adds up to.
 // The numbers are docs/benchmarks.md's. FynePDF's design system: the warm grey page, white cards,
-// blue for ours, orange for errors, Hanken Grotesk embedded, Fynebot. CSS only (transforms and
+// blue for ours, orange for errors, Hanken Grotesk embedded, the FynePDF logo. CSS only (transforms and
 // opacity), a 15-second loop; under prefers-reduced-motion the first scene stands still.
 //
 //   node docs/make-animation.mjs
@@ -15,11 +15,11 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const font = (file) => fs.readFileSync(path.join(here, "assets", file)).toString("base64");
-const mark = fs
-  .readFileSync(path.join(here, "assets", "fynepdf-mark.svg"), "utf8")
+const logo = fs
+  .readFileSync(path.join(here, "assets", "fynepdf-logo.svg"), "utf8")
   .replace(/^<svg[^>]*>/, "")
   .replace(/<\/svg>\s*$/, "")
-  .replaceAll("clip0_2233_1174", "mark-clip");
+  .replaceAll("clip0_10990_4358", "logo-clip");
 
 // Real-world set (1,000 web PDFs), PDF/A-2b, one dot per 10 files (rounded).
 const GS = { valid: 93, wrong: 4, other: 3 };   // 928 valid; 44 labelled PDF/A that fail; the rest
@@ -43,9 +43,6 @@ const scene = ([from, to]) =>
 /** Rises and fades in at |at|. */
 const rise = (at, dy = 10) =>
   `style="${anim(`0%,${pc(at)}{opacity:0;transform:translateY(${dy}px)}${pc(at + 0.5)},100%{opacity:1;transform:none}`)}"`;
-/** Pops in at |at| (spring). */
-const pop = (at) =>
-  `class="o" style="${anim(`0%,${pc(at)}{opacity:0;transform:scale(0.3)}${pc(at + 0.45)},100%{opacity:1;transform:none}`, { ease: "cubic-bezier(0.34,1.56,0.64,1)" })}"`;
 /** Grows from the left over |dur| seconds from |at|. */
 const fill = (at, dur) =>
   `class="l" style="${anim(`0%,${pc(at)}{transform:scaleX(0)}${pc(at + dur)},100%{transform:none}`, { ease: "linear" })}"`;
@@ -114,20 +111,14 @@ parts.push(`<g ${scene(s2)}>
 
 // Scene 3: what it adds up to.
 const s3 = SCENES[2];
-css.push(`@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}`);
-css.push(`@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(0.15)}}`);
 parts.push(`<g ${scene(s3)}>
-  <g transform="translate(600 210)"><g ${pop(s3[0] + 0.2)}><g class="bob">
-    <circle r="48" fill="url(#bot)"/>
-    <g class="eyes"><rect x="-23" y="-18" width="12" height="32" rx="6" fill="#fff"/><rect x="11" y="-18" width="12" height="32" rx="6" fill="#fff"/></g>
-  </g></g></g>
+  <g ${rise(s3[0] + 0.2)}><svg x="460" y="178.6" width="280" height="62.8" viewBox="0 0 107 24">${logo}</svg></g>
   <g ${rise(s3[0] + 0.4)}>
     <text x="600" y="345" class="title" text-anchor="middle">fynepdf-pdfa</text>
     <text x="600" y="395" class="h2b" text-anchor="middle">Valid PDF/A. No false labels. 7.7× faster than Ghostscript.</text>
   </g>
-  <g ${rise(s3[0] + 0.8)} transform="translate(0 0)">
-    <g transform="translate(486 440)"><svg width="36" height="36" viewBox="0 0 58 58">${mark}</svg></g>
-    <text x="528" y="465" class="made">Made by FynePDF · MIT</text>
+  <g ${rise(s3[0] + 0.8)}>
+    <text x="600" y="465" class="made" text-anchor="middle">Made by FynePDF · MIT</text>
   </g>
 </g>`);
 
@@ -135,7 +126,6 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" widt
 <title>fynepdf-pdfa against Ghostscript</title>
 <defs>
   <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#007bff"/><stop offset="1" stop-color="#0046b7"/></linearGradient>
-  <linearGradient id="bot" x1="0" y1="-48" x2="0" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2d92ff"/><stop offset="1" stop-color="#0046b7"/></linearGradient>
   <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#1e1c1c" flood-opacity="0.08"/></filter>
 </defs>
 <style>
@@ -156,11 +146,9 @@ text{font-family:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
 .time-ours{font-size:22px;font-weight:600;fill:#005fdb}
 .made{font-size:18px;font-weight:600;fill:#404040}
 .card{fill:#fff;filter:url(#shadow)}
-.o,.l,.bob,.eyes{transform-box:fill-box}
+.o,.l{transform-box:fill-box}
 .o{transform-origin:center}
 .l{transform-origin:left center}
-.bob{animation:bob 3.2s cubic-bezier(0.65,0,0.35,1) infinite}
-.eyes{transform-origin:center;animation:blink 4.6s linear infinite}
 ${css.join("\n")}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}g[style]{opacity:0}.still,.still [style]{opacity:1!important}}
 </style>
